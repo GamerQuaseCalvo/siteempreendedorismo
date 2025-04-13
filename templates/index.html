@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>teste</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <!-- Botões fixos no topo -->
+  <a href="{{ url_for('mensagens') }}" class="chat-button-fixed">💬 Chat</a>
+  <button class="botao-tema-fixo" onclick="alternarTema()">Alterar tema</button>
+
+  <div class="container">
+    <div class="score">
+      <span id="usernameDisplay"></span> — Pontos: <span id="points">0</span>
+    </div>
+
+    <form id="postForm">
+      <div class="title-wrapper">
+        <input id="titleInput" maxlength="20" placeholder="Título da publicação (máx 20 caracteres)" required />
+        <span id="charCount" class="char-counter">0 / 20</span>
+      </div>
+      <textarea id="contentInput" placeholder="Escreva sua publicação..." required></textarea>
+      <button type="submit">Publicar</button>
+    </form>
+
+    <div id="posts" class="posts"></div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Indicador de atalhos -->
+  <div id="atalhoIndicador" style="
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.05);
+    color: #555;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 1000;
+  ">Atalhos desligados</div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+  <!-- Script de tema -->
+  <script>
+    function aplicarTema() {
+      const temaAtual = localStorage.getItem("tema") || "claro";
+      document.body.classList.toggle("tema-escuro", temaAtual === "escuro");
+    }
+
+    function alternarTema() {
+      const temaAtual = document.body.classList.contains("tema-escuro") ? "escuro" : "claro";
+      const novoTema = temaAtual === "escuro" ? "claro" : "escuro";
+      localStorage.setItem("tema", novoTema);
+      aplicarTema();
+    }
+
+    aplicarTema();
+  </script>
+</body>
+</html>

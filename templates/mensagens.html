@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      animation: fadeInBody 0.8s ease-in-out;
+      transition: background 0.4s ease;
+    }
+
+    body.escuro {
+      background: linear-gradient(135deg, #2c3e50, #4b79a1);
+    }
+
+    .container-chat {
+      background: #f9f9fb;
+      border-radius: 20px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+      width: 95%;
+      max-width: 1500px;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+      box-sizing: border-box;
+      animation: popIn 0.5s ease;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.escuro .container-chat {
+      background: #2a2a2e;
+      color: #f0f0f0;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #333;
+      animation: fadeInText 0.5s ease-in;
+      transition: color 0.4s ease;
+    }
+
+    body.escuro header h1 {
+      color: #f0f0f0;
+    }
+
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 10px;
+      margin-top: 10px;
+    }
+
+    .mensagem {
+      background: #e3f2fd;
+      padding: 12px 18px;
+      border-radius: 16px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      animation: flyInPost 0.4s ease;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.escuro .mensagem {
+      background: #3a3a40;
+      color: #e0e0e0;
+    }
+
+    .mensagem .autor {
+      font-weight: bold;
+      color: #1976d2;
+      font-size: 0.95rem;
+    }
+
+    body.escuro .mensagem .autor {
+      color: #90caf9;
+    }
+
+    .mensagem .texto {
+      margin-top: 6px;
+      color: #333;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    body.escuro .mensagem .texto {
+      color: #ddd;
+    }
+
+    .formulario {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .formulario textarea {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      resize: none;
+      height: 45px;
+      max-height: 120px;
+      line-height: 1.4;
+      transition: border-color 0.3s ease;
+    }
+
+    .formulario textarea:focus {
+      outline: none;
+      border-color: #4caf50;
+      background-color: #f7fff7;
+    }
+
+    .formulario button {
+      padding: 12px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .formulario button:hover {
+      background-color: #43a047;
+      transform: scale(1.05);
+    }
+
+    .botao-voltar-fixo {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #ffffffcc;
+      padding: 10px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+      font-weight: bold;
+      color: #4caf50;
+      font-size: 1rem;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      animation: fadeInButton 0.5s ease;
+    }
+
+    .botao-voltar-fixo:hover {
+      background-color: #ffffffee;
+      transform: scale(1.05);
+    }
+
+    .tema-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ffffffcc;
+      padding: 10px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      font-weight: bold;
+      color: #333;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      animation: fadeInButton 0.5s ease;
+    }
+
+    .tema-toggle:hover {
+      background-color: #ffffffee;
+      transform: scale(1.05);
+    }
+
+    @keyframes flyInPost {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInBody {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInText {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInButton {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/" class="botao-voltar-fixo">Voltar</a>
+  <div class="tema-toggle" onclick="alternarTema()">🌙 Tema</div>
+
+  <div class="container-chat">
+    <header>
+      <h1>Chat</h1>
+    </header>
+
+    <div class="chat-container" id="chatContainer"></div>
+
+    <div class="formulario">
+      <textarea id="mensagemInput" placeholder="Digite sua mensagem..."></textarea>
+      <button onclick="enviarMensagem()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    const chatContainer = document.getElementById("chatContainer");
+    const mensagemInput = document.getElementById("mensagemInput");
+
+    let usuario = localStorage.username_mensagens || "Anônimo";
+    let atalhosAtivos = true;
+    let mensagensAnteriores = [];
+
+    const atalhoIndicador = document.createElement("div");
+    atalhoIndicador.innerText = "Atalhos desligados";
+    atalhoIndicador.style.cssText = `
+      position: fixed;
+      bottom: 10px;
+      right: 15px;
+      background: rgba(0, 0, 0, 0.05);
+      color: #555;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      display: none;
+      z-index: 1000;
+    `;
+    document.body.appendChild(atalhoIndicador);
+
+    function validarNome(nome) {
+      return /^[a-zA-Zà-úÀ-Ú\s]+$/.test(nome.trim());
+    }
+
+    function salvarUsuario(nome) {
+      localStorage.username_mensagens = nome;
+      localStorage.username_posts = nome;
+      usuario = nome;
+    }
+
+    function carregarMensagens() {
+      fetch("/mensagens_salvas")
+        .then(res => res.json())
+        .then(mensagens => {
+          if (JSON.stringify(mensagens) !== JSON.stringify(mensagensAnteriores)) {
+            const novas = mensagens.slice(mensagensAnteriores.length);
+            novas.forEach(m => adicionarMensagem(m));
+            mensagensAnteriores = mensagens;
+          }
+        });
+    }
+
+    function enviarMensagem() {
+      const texto = mensagemInput.value.trim();
+      if (!texto) return;
+
+      fetch("/enviar_mensagem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ texto, autor: usuario })
+      }).then(res => {
+        if (res.ok) {
+          mensagemInput.value = "";
+          carregarMensagens();
+        }
+      });
+    }
+
+    function adicionarMensagem(msg) {
+      const el = document.createElement("div");
+      el.className = "mensagem";
+      el.innerHTML = `
+        <div class="autor">${msg.autor}</div>
+        <div class="texto">${msg.texto}</div>
+      `;
+      chatContainer.appendChild(el);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    mensagemInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        enviarMensagem();
+      }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Alt") {
+        atalhosAtivos = !atalhosAtivos;
+        atalhoIndicador.style.display = atalhosAtivos ? "none" : "block";
+      }
+
+      if (e.key === "Control" && atalhosAtivos) {
+        const novoNome = prompt("Digite seu nome:");
+        if (novoNome && validarNome(novoNome)) {
+          salvarUsuario(novoNome);
+        }
+      }
+    });
+
+    function alternarTema() {
+      document.body.classList.toggle("escuro");
+    }
+
+    carregarMensagens();
+    setInterval(carregarMensagens, 3000);
+  </script>
+</body>
+</html>
